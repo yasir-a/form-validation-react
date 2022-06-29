@@ -3,7 +3,7 @@ import InputBox from "./reusableComponent/InputBox";
 import Login from "./assets/unDraw/loginSVG.svg";
 import "./App.css";
 const App = () => {
-  const [input, setInput] = useState({ username: "", password: "" });
+  const [input, setInput] = useState({ username: "", email: "", password: "" });
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -15,26 +15,34 @@ const App = () => {
   };
 
   return (
-    <div className="form-container">
-      <form className="form" onSubmit={handleOnSubmit}>
-        <img className="login-img" src={Login} alt="login" />
+    <div className='form-container'>
+      <form className='form' onSubmit={handleOnSubmit}>
+        <img className='login-img' src={Login} alt='login' />
         <InputBox
-          id="username"
-          type="text"
-          name="username"
+          id='username'
+          type='text'
+          name='username'
           value={input.username}
-          label="Username"
+          label='Username'
           onChange={handleOnChange}
         />
         <InputBox
-          id="password"
-          type="password"
-          name="password"
-          value={input.password}
-          label="Password"
+          id='email'
+          type='email'
+          name='email'
+          value={input.email}
+          label='Email'
           onChange={handleOnChange}
         />
-        <button type="submit">Login</button>
+        <InputBox
+          id='password'
+          type='password'
+          name='password'
+          value={input.password}
+          label='Password'
+          onChange={handleOnChange}
+        />
+        <button type='submit'>Login</button>
       </form>
     </div>
   );
