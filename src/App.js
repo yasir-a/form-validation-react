@@ -2,16 +2,79 @@ import { useState } from "react";
 import InputBox from "./reusableComponent/InputBox";
 import Login from "./assets/unDraw/loginSVG.svg";
 import "./App.css";
+
 const App = () => {
-  const [input, setInput] = useState({ username: "", email: "", password: "" });
+  const [inputValues, setInputValues] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  const [err, setErr] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
-    setInput({ ...input, [name]: value });
+    setInputValues({ ...inputValues, [name]: value });
   };
+
+  const validate = (values) => {
+    const err = {};
+    const emailRegEx =
+      /[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,8}(.[a-z{2,8}])?/g;
+    const capsLetterRegEx = /[A-Z]/;
+    const numberRegEx = /[0-9]/;
+    const reqPWDLength = 8;
+    const specialCharRegEx = /[!@#$%^&*]/;
+
+    const check = {
+      USERNAME_EMPTY: !values.username,
+      EMAIL_EMPTY: !values.email,
+      EMAIL_VALID: !emailRegEx.test(values.email),
+      PWD_EMPTY: !values.password,
+      PWD_LENGTH: !values.password.length >= reqPWDLength,
+      PWD_HAS_CAPS: !capsLetterRegEx.test(values.password),
+      PWD_HAS_NUM: !numberRegEx.test(values.password),
+      PWD_HAS_SP_CHAR: !specialCharRegEx.test(values.password),
+    };
+
+    switch (true) {
+      case check.USERNAME_EMPTY:
+        err.username = "Enter the Username!";
+        break;
+      case check.EMAIL_EMPTY:
+        err.email = "Enter the Email!";
+        break;
+      case check.EMAIL_VALID:
+        err.email = "Enter the valid Email";
+        break;
+      case check.PWD_EMPTY:
+        err.password = "Enter the Password!";
+        break;
+      case check.PWD_LENGTH:
+        err.password = `Password must be atleast ${reqPWDLength} characters long`;
+        break;
+      case check.PWD_HAS_CAPS:
+        err.password = "Password must contain atleast 1 Caps Letter";
+        break;
+      case check.PWD_HAS_NUM:
+        err.password = "Password must contain atleast 1 Number";
+        break;
+      case check.PWD_HAS_SP_CHAR:
+        err.password = " Password must contain atleast 1 Special Character";
+        break;
+      default:
+    }
+    return err;
+  };
+
   const handleOnSubmit = (e) => {
     e.preventDefault();
-    console.log(input);
+    const err = validate(inputValues);
+    setErr(err);
+    console.log(err);
+    setIsSubmit(true);
+    console.log(inputValues);
   };
 
   return (
@@ -22,27 +85,30 @@ const App = () => {
           id='username'
           type='text'
           name='username'
-          value={input.username}
+          value={inputValues.username}
           label='Username'
           onChange={handleOnChange}
         />
+        <p>{err.username}</p>
         <InputBox
           id='email'
-          type='email'
+          type='text'
           name='email'
-          value={input.email}
+          value={inputValues.email}
           label='Email'
           onChange={handleOnChange}
         />
+        <p>{err.email}</p>
         <InputBox
           id='password'
           type='password'
           name='password'
-          value={input.password}
+          value={inputValues.password}
           label='Password'
           onChange={handleOnChange}
         />
-        <button type='submit'>Login</button>
+        <p>{err.password}</p>
+        <button type='submit'>Submit</button>
       </form>
     </div>
   );
