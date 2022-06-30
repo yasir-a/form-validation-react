@@ -1,7 +1,7 @@
 .form-container {
   margin: 150px auto;
   padding: 20px 0;
-  border-radius: 30px;
+  border-radius: 5px;
   width: 300px;
   background: #e0e0e0;
   box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
@@ -18,15 +18,27 @@
   height: 80px;
   width: 100px;
 }
+
+.err,
+.err-pwd {
+  font-size: 14px;
+  color: red;
+}
+.err-pwd {
+  word-wrap: break-word;
+  text-align: center;
+  width: 300px;
+}
+
 button {
   font-size: 18px;
-  margin-top: 40px;
+  margin-top: 10px;
   display: inline-block;
   outline: 0;
   border: 0;
   cursor: pointer;
   background: radial-gradient(100% 100% at 100% 0%, #89e5ff 0%, #5468ff 100%);
-  border-radius: 50px;
+  border-radius: 5px;
   color: #fff;
   height: 40px;
   width: 100px;

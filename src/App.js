@@ -32,27 +32,23 @@ const App = () => {
       EMAIL_EMPTY: !values.email,
       EMAIL_VALID: !emailRegEx.test(values.email),
       PWD_EMPTY: !values.password,
-      PWD_LENGTH: !values.password.length >= reqPWDLength,
       PWD_HAS_CAPS: !capsLetterRegEx.test(values.password),
       PWD_HAS_NUM: !numberRegEx.test(values.password),
       PWD_HAS_SP_CHAR: !specialCharRegEx.test(values.password),
+      PWD_LENGTH: values.password.length <= reqPWDLength,
     };
 
     switch (true) {
       case check.USERNAME_EMPTY:
         err.username = "Enter the Username!";
         break;
-      case check.EMAIL_EMPTY:
-        err.email = "Enter the Email!";
-        break;
-      case check.EMAIL_VALID:
-        err.email = "Enter the valid Email";
+      case check.EMAIL_EMPTY || check.EMAIL_VALID:
+        check.EMAIL_EMPTY
+          ? (err.email = "Enter the Email!")
+          : (err.email = "Enter the valid Email");
         break;
       case check.PWD_EMPTY:
         err.password = "Enter the Password!";
-        break;
-      case check.PWD_LENGTH:
-        err.password = `Password must be atleast ${reqPWDLength} characters long`;
         break;
       case check.PWD_HAS_CAPS:
         err.password = "Password must contain atleast 1 Caps Letter";
@@ -63,6 +59,9 @@ const App = () => {
       case check.PWD_HAS_SP_CHAR:
         err.password = " Password must contain atleast 1 Special Character";
         break;
+      case check.PWD_LENGTH:
+        err.password = `Password must be atleast ${reqPWDLength} characters long`;
+        break;
       default:
     }
     return err;
@@ -72,7 +71,6 @@ const App = () => {
     e.preventDefault();
     const err = validate(inputValues);
     setErr(err);
-    console.log(err);
     setIsSubmit(true);
     console.log(inputValues);
   };
@@ -89,7 +87,7 @@ const App = () => {
           label='Username'
           onChange={handleOnChange}
         />
-        <p>{err.username}</p>
+        <p className='err'>{err.username}</p>
         <InputBox
           id='email'
           type='text'
@@ -98,7 +96,7 @@ const App = () => {
           label='Email'
           onChange={handleOnChange}
         />
-        <p>{err.email}</p>
+        <p className='err'>{err.email}</p>
         <InputBox
           id='password'
           type='password'
@@ -107,7 +105,7 @@ const App = () => {
           label='Password'
           onChange={handleOnChange}
         />
-        <p>{err.password}</p>
+        <p className='err-pwd'>{err.password}</p>
         <button type='submit'>Submit</button>
       </form>
     </div>
